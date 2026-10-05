@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Auxiliatura de Análisis Numérico</title>
+<style>
+:root{--navy:#0f2742;--teal:#0e7c86;--bg:#f3f6fa;--card:#fff;--tx:#1e293b;--mu:#64748b;--ln:#e2e8f0;--ok:#16a34a}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:linear-gradient(120deg,var(--navy),#17496b);color:#fff;padding:22px 20px 60px}
+.w{max-width:1100px;margin:0 auto}.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+h1{margin:0;font-size:26px}header p{margin:4px 0 0;color:#cbd5e1;font-size:13.5px}
+button,input{font:inherit}.btn{border:0;border-radius:8px;padding:8px 14px;cursor:pointer;background:var(--teal);color:#fff;font-weight:600}
+.btn.g{background:rgba(255,255,255,.15)}.btn.l{background:#e8eef5;color:var(--navy)}.btn.r{background:#fee2e2;color:#b91c1c}
+main{max-width:1100px;margin:-40px auto 40px;padding:0 14px}
+.card{background:var(--card);border-radius:14px;box-shadow:0 2px 12px rgba(15,39,66,.08);padding:18px;margin-bottom:18px}
+h2{margin:0 0 12px;font-size:18px;color:var(--navy)}
+.cong{background:linear-gradient(90deg,#fff8e1,#ffeecb);border:1px solid #f5d98b;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-weight:600;color:#7a5200}
+.pods{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.pod{flex:1 1 200px;border-radius:12px;padding:16px;text-align:center;border:2px solid;animation:up .6s both}
+.pod.p1{background:#fffbea;border-color:#f4b400;min-height:170px}.pod.p2{background:#f4f6f8;border-color:#a7b0ba;min-height:140px}.pod.p3{background:#fdf1e7;border-color:#c2763a;min-height:120px}
+.medal{width:42px;height:42px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:20px;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.p1 .medal{background:#f4b400}.p2 .medal{background:#8c97a3}.p3 .medal{background:#c2763a}
+.pod h3{margin:0 0 4px;font-size:16px}.pod span{color:var(--mu);font-size:13px}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+.tw{overflow:auto;border-radius:10px;border:1px solid var(--ln)}table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--ln);text-align:center;white-space:nowrap}
+th{background:#f8fafc;font-size:12.5px;color:var(--navy)}#rank td:nth-child(2),#rank th:nth-child(2),.nm{text-align:left}th.gp{background:#e3eef2}
+.bar{height:8px;background:#e8eef5;border-radius:6px;min-width:90px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),#34b6a8)}
+.rk{display:inline-block;min-width:26px;padding:2px 6px;border-radius:12px;background:#e8eef5;font-weight:700}
+.ok{color:var(--ok);font-weight:800;font-size:17px}
+.chk{width:26px;height:26px;border-radius:6px;border:2px solid #b6c2d0;background:#fff;cursor:pointer;color:#fff;font-weight:800}.chk.on{background:var(--ok);border-color:var(--ok)}
+.chk.on::after{content:"✓"}.mini{border:1px solid var(--ln);background:#fff;border-radius:6px;width:24px;height:24px;cursor:pointer}
+.tn{width:110px;border:1px solid var(--ln);border-radius:6px;padding:3px 5px;font-weight:600}.tp{width:50px;border:1px solid var(--ln);border-radius:6px;padding:3px}
+.tool{display:none;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;padding:12px;background:#eef6f7;border:1px dashed var(--teal);border-radius:10px}
+body.t .tool{display:flex}.tool input[type=text]{padding:7px 9px;border:1px solid var(--ln);border-radius:8px;width:170px}
+.st{font-size:12.5px;color:#b45309;font-weight:600}.q{padding:8px 10px;border:1px solid var(--ln);border-radius:8px;width:100%;max-width:300px;margin-bottom:10px}
+dialog{border:0;border-radius:12px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,.3)}dialog input{display:block;margin:10px 0;padding:8px;width:240px;border:1px solid var(--ln);border-radius:8px}
+footer{text-align:center;color:var(--mu);font-size:12.5px;padding-bottom:30px}
+</style></head><body>
+<header><div class="w top"><div><h1 id="ti"></h1><p id="me"></p></div><button class="btn g" id="lock"></button></div></header>
+<main>
+<div class="card"><h2>🏆 Ranking del curso</h2><div id="cong"></div><div class="pods" id="pods"></div></div>
+<div class="card"><h2>Clasificación general</h2><div class="tw"><table id="rank"></table></div></div>
+<div class="card"><h2>Registro de Python, participaciones y extra</h2>
+<div class="tool" id="tool">
+<input type="text" id="ne" placeholder="Nombre del estudiante"><button class="btn" id="ae">+ Estudiante</button>
+<input type="text" id="nt" placeholder="Nombre de la práctica Python"><button class="btn" id="at">+ Python</button>
+<input type="text" id="np" placeholder="Nombre de la participación"><button class="btn" id="ap">+ Participación</button>
+<button class="btn l" id="ex">⬇ Exportar datos.json</button>
+<button class="btn l" id="im">⬆ Importar</button><input type="file" id="fi" accept=".json" hidden>
+<button class="btn r" id="dd">Descartar borrador</button><span class="st" id="st"></span></div>
+<input class="q" id="q" placeholder="Buscar estudiante…"><div class="tw"><table id="grid"></table></div></div>
+</main>
+<footer id="ft"></footer>
+<dialog id="dlg"><form method="dialog"><b id="dt"></b><input type="password" id="pw" autocomplete="off"><div id="de" style="color:#b91c1c;font-size:13px"></div>
+<button class="btn" id="go" value="ok">Entrar</button> <button class="btn l" value="x">Cancelar</button></form></dialog>
+<script>
+const DEF={meta:{materia:"Análisis numérico",carrera:"Ciencias Físicas y Energías Alternativas",auxiliar:"Yerko Aldair Quispe Ticona",actualizado:"2026-10-05"},
+tareas:[["Py 1 · Print"],["Py 2 · Variables"],["Py 3 · Operadores"],["Py 4 · Condicionales"],["Py 5 · Bucles"],["Py 6 · Funciones"],["Py 7 · Listas"],["Py 8 · NumPy"],["Py 9 · Matplotlib"],["Práctica 1 · Euler"]].map((t,i)=>({id:"t"+(i+1),n:t[0],p:10})),
+est:[["Quiñones Loza Jeny",[1,2,4],0],["Ramos Condori Edwin Efraín",[1,2,3,4],3],["Magaly Cumara Mamani",[1,2,3,4],2],["Mileydi Quispe Quispe",[1,2,3,4],2],["Masiel Sarai Callisaya Q.",[1,2,3,4],2],["Christian Miranda Paco",[1,2],0],["Carmen Maribel Quispe Choque",[1,2],0],["Esmeralda Condori Valencia",[4],1],["Limber Leaño Condori",[4],1],["Gladys Giovana Rojas Luna",[],0]].map(e=>({n:e[0],h:e[1].map(k=>"t"+k),pa:e[2]}))};
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function mig(o){o.parts=o.parts||[];
+ if(o.extras){const ids=o.extras.map(x=>x.id);o.est.forEach(s=>{s.ex=(s.ex||0)+s.h.filter(k=>ids.includes(k)).length;s.h=s.h.filter(k=>!ids.includes(k))});delete o.extras}
+ o.est.forEach(s=>s.ex=s.ex||0);
+ if(o.est.some(s=>s.pa!==undefined)){const n=Math.max(0,...o.est.map(s=>s.pa||0));
+  if(!o.parts.length)for(let i=1;i<=n;i++)o.parts.push({id:"p"+i,n:"Participación "+i,p:5});
+  o.est.forEach(s=>{for(let i=1;i<=(s.pa||0);i++)s.h.push("p"+i);delete s.pa})}
+ delete o.ptsPart;return o}
+let D=mig(DEF),T=sessionStorage.doc==="1";
+const items=()=>[...D.tareas,...D.parts],find=id=>items().find(i=>i.id===id);
+const sc=s=>items().reduce((a,t)=>a+(s.h.includes(t.id)?+t.p:0),0)+(s.ex||0);
+const total=()=>[...D.tareas,...D.parts].reduce((a,t)=>a+ +t.p,0);
+const cnt=(s,a)=>a.filter(t=>s.h.includes(t.id)).length+"/"+a.length;
+function ranked(){const l=D.est.map(s=>({s,x:sc(s)}));l.forEach(o=>o.r=1+l.filter(q=>q.x>o.x).length);return l.sort((a,b)=>b.x-a.x||a.s.n.localeCompare(b.s.n))}
+const fmt=n=>Math.round(n*10)/10;
+const names=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" y "+a.slice(-1);
+function save(){D.meta.actualizado=new Date().toISOString().slice(0,10);localStorage.draft=JSON.stringify(D);render()}
+function render(){
+ document.body.classList.toggle("t",T);
+ $("#ti").textContent="Auxiliatura de Análisis Numérico";
+ $("#me").textContent=D.meta.carrera+" · Auxiliar: "+D.meta.auxiliar;
+ $("#lock").textContent=T?"🔓 Salir del modo docente":"🔒 Modo docente";
+ $("#ft").textContent="Última actualización: "+D.meta.actualizado.split("-").reverse().join("/")+" · Puntaje = Python + participaciones + extra";
+ $("#st").textContent=localStorage.draft?"● Cambios sin publicar: exporta datos.json y súbelo a GitHub":"";
+ const L=ranked(),top=L.filter(o=>o.r<=3&&o.x>0),mx=Math.max(total(),1);
+ $("#cong").innerHTML=top.length?`<div class="cong">🎉 ¡Felicitaciones a ${esc(names(top.map(o=>o.s.n)))} por su excelente desempeño! Sigan así.</div>`:"";
+ let ph="";for(const r of [1,2,3]){const g=top.filter(o=>o.r===r);if(g.length)ph+=`<div class="pod p${r}"><div class="medal">${r}</div><h3>${g.map(o=>esc(o.s.n)).join("<br>")}</h3><span>${fmt(g[0].x)} puntos</span></div>`}
+ $("#pods").innerHTML=ph||"<span>Aún no hay puntajes.</span>";
+ $("#rank").innerHTML=`<tr><th>Pos.<th>Estudiante<th>Python<th>Particip.<th>Extra<th>Puntos<th>Avance</tr>`+L.map(o=>`<tr><td><span class="rk">${o.r}</span><td>${esc(o.s.n)}<td>${cnt(o.s,D.tareas)}<td>${cnt(o.s,D.parts)}<td>${o.s.ex||0}<td><b>${fmt(o.x)}</b><td><div class="bar"><i style="width:${Math.min(100,o.x/mx*100)}%"></i></div></tr>`).join("");
+ const q=$("#q").value.toLowerCase();
+ const G=[["Python",D.tareas],["Participaciones",D.parts]];
+ const hd=t=>T?`<th><input class="tn" data-tn="${t.id}" value="${esc(t.n)}"><br><input class="tp" type="number" data-tp="${t.id}" value="${t.p}"> pts <button class="mini" data-dt="${t.id}">✕</button>`:`<th>${esc(t.n)}<br><small>${t.p} pts</small>`;
+ const cell=(s,i)=>t=>{const on=s.h.includes(t.id);return T?`<td><button class="chk ${on?"on":""}" data-s="${i}" data-t="${t.id}"></button>`:`<td>${on?'<span class="ok">✓</span>':'<span style="color:#cbd5e1">–</span>'}`};
+ let h=`<tr><th rowspan="2">#<th rowspan="2" class="nm">Estudiante`+G.map(g=>`<th class="gp" colspan="${g[1].length||1}">${g[0]}`).join("")+`<th rowspan="2">Extra<br><small>1 pt c/u</small><th rowspan="2">Total${T?'<th rowspan="2">':""}</tr><tr>`+G.map(g=>g[1].length?g[1].map(hd).join(""):"<th>").join("")+"</tr>";
+ D.est.forEach((s,i)=>{if(q&&!s.n.toLowerCase().includes(q))return;
+  h+=`<tr><td>${i+1}<td class="nm">${esc(s.n)}`+G.map(g=>g[1].length?g[1].map(cell(s,i)).join(""):"<td>").join("")
+  +`<td>${T?`<button class="mini" data-xm="-1" data-s="${i}">−</button> ${s.ex||0} <button class="mini" data-xm="1" data-s="${i}">+</button>`:(s.ex||0)}<td><b>${fmt(sc(s))}</b>${T?`<td><button class="mini" data-ds="${i}">✕</button>`:""}</tr>`});
+ $("#grid").innerHTML=h}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b||!T)return;const d=b.dataset;
+ if(d.t!==undefined){const s=D.est[d.s],k=s.h.indexOf(d.t);k<0?s.h.push(d.t):s.h.splice(k,1);save()}
+ else if(d.xm){const s=D.est[d.s];s.ex=Math.max(0,(s.ex||0)+ +d.xm);save()}
+ else if(d.ds!==undefined){if(confirm("¿Eliminar a "+D.est[d.ds].n+"?")){D.est.splice(d.ds,1);save()}}
+ else if(d.dt){if(confirm("¿Eliminar esta columna para todos?")){for(const k of["tareas","parts"])D[k]=D[k].filter(t=>t.id!==d.dt);D.est.forEach(s=>s.h=s.h.filter(x=>x!==d.dt));save()}}});
+document.addEventListener("change",e=>{const d=e.target.dataset;if(!T)return;
+ if(d.tn){find(d.tn).n=e.target.value.trim()||"Sin nombre";save()}
+ if(d.tp){find(d.tp).p=Math.max(0,+e.target.value||0);save()}});
+$("#q").oninput=render;
+$("#ae").onclick=()=>{const n=$("#ne").value.trim();if(n){D.est.push({n,h:[],ex:0});$("#ne").value="";save()}};
+const add=(inp,k,pre,p)=>()=>{const n=$(inp).value.trim();if(n){D[k].push({id:pre+Date.now(),n,p});$(inp).value="";save()}};
+$("#at").onclick=add("#nt","tareas","t",10);
+$("#ap").onclick=add("#np","parts","p",5);
+
+$("#ex").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,1)],{type:"application/json"}));a.download="datos.json";a.click()};
+$("#im").onclick=()=>$("#fi").click();
+$("#fi").onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const o=JSON.parse(t);if(!Array.isArray(o.est)||!Array.isArray(o.tareas))throw 0;D=mig(o);save()}catch{alert("Archivo no válido")}})};
+$("#dd").onclick=async()=>{if(confirm("¿Descartar los cambios sin publicar?")){localStorage.removeItem("draft");await load();render()}};
+const hash=async p=>crypto.subtle?[...new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode("py"+p)))].map(x=>x.toString(16).padStart(2,"0")).join(""):btoa(unescape(encodeURIComponent("py"+p)));
+$("#lock").onclick=()=>{if(T){T=false;sessionStorage.doc="0";return load().then(render)}
+ $("#dt").textContent=D.pw?"Contraseña del docente":"Crea tu contraseña de docente";$("#pw").value="";$("#de").textContent="";$("#dlg").showModal()};
+$("#go").onclick=async e=>{e.preventDefault();const v=$("#pw").value;if(!v)return;
+ if(D.pw&&await hash(v)!==D.pw){$("#de").textContent="Contraseña incorrecta";return}
+ const nuevo=!D.pw;if(nuevo)D.pw=await hash(v);T=true;sessionStorage.doc="1";$("#dlg").close();
+ if(!nuevo&&localStorage.draft)D=mig(JSON.parse(localStorage.draft));nuevo?save():render()};
+async function load(){D=DEF;try{const r=await fetch("datos.json?"+Date.now());if(r.ok)D=await r.json()}catch{}
+ D=mig(D);
+ if(T&&localStorage.draft)D=mig(JSON.parse(localStorage.draft))}
+load().then(render);
+</script></body></html>
