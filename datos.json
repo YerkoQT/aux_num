@@ -8,52 +8,52 @@
  "tareas": [
   {
    "id": "t1",
-   "n": "Py 1 · Print",
+   "n": "Print",
    "p": 10
   },
   {
    "id": "t2",
-   "n": "Py 2 · Variables",
+   "n": "Variables",
    "p": 10
   },
   {
    "id": "t3",
-   "n": "Py 3 · Operadores",
+   "n": "Operadores",
    "p": 10
   },
   {
    "id": "t4",
-   "n": "Py 4 · Condicionales",
+   "n": "Condicionales",
    "p": 10
   },
   {
    "id": "t5",
-   "n": "Py 5 · Bucles",
+   "n": "Bucles",
    "p": 10
   },
   {
    "id": "t6",
-   "n": "Py 6 · Funciones",
+   "n": "Funciones",
    "p": 10
   },
   {
    "id": "t7",
-   "n": "Py 7 · Listas",
+   "n": "Listas",
    "p": 10
   },
   {
    "id": "t8",
-   "n": "Py 8 · NumPy",
+   "n": "NumPy",
    "p": 10
   },
   {
    "id": "t9",
-   "n": "Py 9 · Matplotlib",
+   "n": "Matplotlib",
    "p": 10
   },
   {
    "id": "t10",
-   "n": "Práctica 1 · Euler",
+   "n": "Práctica",
    "p": 10
   }
  ],
